@@ -1,0 +1,510 @@
+<!-- <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="./assets/img/apple-icon.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/creativetimofficial/tailwind-starter-kit/compiled-tailwind.min.css"
+    />
+    <title>Sentiment Analysis of Customer Reviews</title>
+  </head>
+
+  <body class="text-gray-800 antialiased">
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
+      defer
+    ></script>
+
+    <main>
+      <div
+        class="relative pt-16 pb-32 flex content-center items-center justify-center"
+        style="min-height: 75vh"
+      >
+        <div
+          class="absolute top-0 w-full h-full bg-center bg-cover"
+          style="
+            background-image: linear-gradient(
+              90deg,
+              rgba(0, 0, 0, 1) 0%,
+              rgba(255, 255, 0, 1) 100%
+            );
+          "
+        >
+          <span
+            id="blackOverlay"
+            class="w-full h-full absolute opacity-50 bg-black"
+          ></span>
+        </div>
+        <div class="container relative mx-auto">
+          <div class="items-center flex flex-wrap">
+            <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+              <div class="pr-12">
+                <h1
+                  class="text-white font-semibold text-5xl"
+                  style="letter-spacing: 0.05em; line-height: 2em"
+                >
+                  Sorting sentiments like bullets in a shootout – our project
+                  aims to hit the mark every time.
+                </h1>
+                <p class="mt-4 text-lg text-gray-300">
+                  Listen up, partner. This here sentiment analysis project ain't
+                  your run-of-the-mill rodeo. We're ridin' through the wild
+                  terrain of words, sortin' out the good vibes from the bad with
+                  the precision of a sharpshooter. We're takin' raw text and
+                  wranglin' it into real, straight-shootin' insights. So saddle
+                  up, 'cause we're about to lay down the law on sentiment, Clint
+                  Eastwood style
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
+          style="height: 70px"
+        >
+          <svg
+            class="absolute bottom-0 overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="text-gray-300 fill-current"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+      </div>
+
+      <section class="relative py-20">
+        <div
+          class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+          style="height: 80px"
+        >
+          <svg
+            class="absolute bottom-0 overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="text-white fill-current"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <h1 class="text-5xl font-semibold py-2">Text Sentiment Prediction</h1>
+        </div>
+        <div class="container mx-auto px-4 py-24">
+          <div class="items-center flex flex-wrap">
+            <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
+              <form id="predictionForm">
+                <div class="container max-w-full mx-auto md:py-24 px-6">
+                  <div class="max-w-sm mx-auto px-6">
+                    <div class="relative flex flex-wrap">
+                      <div class="w-full relative">
+                        <div class="md:mt-6">
+                          <form class="mt-8" id="predictionForm">
+                            <div class="mx-auto max-w-lg">
+                              <div class="py-1">
+                                <span class="px-1 text-sm text-gray-600"
+                                  >Text for Prediction</span
+                                >
+                                <textarea
+                                  class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
+                                  id="textInput"
+                                  placeholder="Enter text..."
+                                ></textarea>
+                              </div>
+
+                              <button
+                                type="button"
+                                onclick="predict()"
+                                class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+                              >
+                                Predict
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
+              <div>
+                <h1 class="text-4xl underline underline-offset-8">
+                  Prediction Result
+                </h1>
+                <div class="p-4 m-2 border">
+                  <div id="predictionResult"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="relative bg-gray-900 pt-8 pb-6">
+      <div
+        class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+        style="height: 80px"
+      >
+        <svg
+          class="absolute bottom-0 overflow-hidden"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          version="1.1"
+          viewBox="0 0 2560 100"
+          x="0"
+          y="0"
+        >
+          <polygon
+            class="text-gray-300 fill-current"
+            points="2560 0 2560 100 0 100"
+          ></polygon>
+        </svg>
+      </div>
+      <div class="container mx-auto px-4">
+        <hr class="my-6 border-gray-400" />
+        <div
+          class="flex flex-wrap items-center md:justify-between justify-center"
+        >
+          <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+            <div class="text-sm text-white font-semibold py-1">
+              Copyright © Text sentiment prediction
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script>
+    function predict() {
+      var textInput = document.getElementById("textInput");
+      var predictionResult = document.getElementById("predictionResult");
+
+      if (textInput.value.trim() !== "") {
+        // Predict on single sentence
+        fetch("http://localhost:5000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: textInput.value.trim() }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            predictionResult.innerHTML =
+              "Predicted sentiment: " + data.prediction;
+          });
+      }
+    }
+  </script>
+</html> -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="./assets/img/apple-icon.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/creativetimofficial/tailwind-starter-kit/compiled-tailwind.min.css"
+    />
+    <title>Sentiment Analysis of Customer Reviews</title>
+  </head>
+
+  <body class="text-gray-800 antialiased">
+    <script
+      src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.js"
+      defer
+    ></script>
+    <main>
+      <div
+        class="relative pt-16 pb-32 flex content-center items-center justify-center"
+        style="min-height: 75vh"
+      >
+        <div
+          class="absolute top-0 w-full h-full bg-center bg-cover"
+          style="
+            background-image: linear-gradient(
+              90deg,
+              rgba(0, 0, 0, 1) 0%,
+              rgba(255, 255, 0, 1) 100%
+            );
+          "
+        >
+          <span
+            id="blackOverlay"
+            class="w-full h-full absolute opacity-50 bg-black"
+          ></span>
+        </div>
+        <div class="container relative mx-auto">
+          <div class="items-center flex flex-wrap">
+            <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
+              <div class="pr-12">
+                <h1
+                  class="text-white font-semibold text-5xl"
+                  style="letter-spacing: 0.05em; line-height: 2em"
+                >
+                  Sorting sentiments like bullets in a shootout – our project
+                  aims to hit the mark every time.
+                </h1>
+                <p class="mt-4 text-lg text-gray-300">
+                  Listen up, partner. This here sentiment analysis project ain't
+                  your run-of-the-mill rodeo. We're ridin' through the wild
+                  terrain of words, sortin' out the good vibes from the bad with
+                  the precision of a sharpshooter. We're takin' raw text and
+                  wranglin' it into real, straight-shootin' insights. So saddle
+                  up, 'cause we're about to lay down the law on sentiment, Clint
+                  Eastwood style.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden"
+          style="height: 70px"
+        >
+          <svg
+            class="absolute bottom-0 overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="text-gray-300 fill-current"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+      </div>
+
+      <section class="relative py-20">
+        <div
+          class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+          style="height: 80px"
+        >
+          <svg
+            class="absolute bottom-0 overflow-hidden"
+            xmlns="http://www.w3.org/2000/svg"
+            preserveAspectRatio="none"
+            version="1.1"
+            viewBox="0 0 2560 100"
+            x="0"
+            y="0"
+          >
+            <polygon
+              class="text-white fill-current"
+              points="2560 0 2560 100 0 100"
+            ></polygon>
+          </svg>
+        </div>
+        <div class="flex flex-col items-center justify-center">
+          <h1 class="text-5xl font-semibold py-2">Text Sentiment Prediction</h1>
+        </div>
+        <div class="container mx-auto px-4 py-24">
+          <div class="items-center flex flex-wrap">
+            <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
+              <form
+                id="predictionForm"
+                onsubmit="event.preventDefault(); predict();"
+              >
+                <div class="container max-w-full mx-auto md:py-24 px-6">
+                  <div class="max-w-sm mx-auto px-6">
+                    <div class="relative flex flex-wrap">
+                      <div class="w-full relative">
+                        <div class="md:mt-6">
+                          <div class="mx-auto max-w-lg">
+                            <div class="py-1">
+                              <span class="px-1 text-sm text-gray-600"
+                                >Text for Prediction</span
+                              >
+                              <textarea
+                                class="text-md block px-3 py-2 rounded-lg w-full bg-white border-2 border-gray-300 placeholder-gray-600 shadow-md focus:placeholder-gray-500 focus:bg-white focus:border-gray-600 focus:outline-none"
+                                id="textInput"
+                                placeholder="Enter text..."
+                              ></textarea>
+                            </div>
+                            <button
+                              type="button"
+                              onclick="predict()"
+                              class="mt-3 text-lg font-semibold bg-gray-800 w-full text-white rounded-lg px-6 py-3 block shadow-xl hover:text-white hover:bg-black"
+                            >
+                              Predict
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
+              <div>
+                <h1 class="text-4xl underline underline-offset-8">
+                  Prediction Result
+                </h1>
+                <div class="p-4 m-2 border">
+                  <div id="predictionResult"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="relative bg-gray-900 pt-8 pb-6">
+      <div
+        class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20"
+        style="height: 80px"
+      >
+        <svg
+          class="absolute bottom-0 overflow-hidden"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          version="1.1"
+          viewBox="0 0 2560 100"
+          x="0"
+          y="0"
+        >
+          <polygon
+            class="text-gray-300 fill-current"
+            points="2560 0 2560 100 0 100"
+          ></polygon>
+        </svg>
+      </div>
+      <div class="container mx-auto px-4">
+        <hr class="my-6 border-gray-400" />
+        <div
+          class="flex flex-wrap items-center md:justify-between justify-center"
+        >
+          <div class="w-full md:w-4/12 px-4 mx-auto text-center">
+            <div class="text-sm text-white font-semibold py-1">
+              Copyright © Text sentiment prediction
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <!-- <script>
+    function predict() {
+      var textInput = document.getElementById("textInput");
+      var predictionResult = document.getElementById("predictionResult");
+
+      if (textInput.value.trim() !== "") {
+        // Predict on single sentence
+        fetch("http://localhost:5000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: textInput.value.trim() }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            if (data.prediction) {
+              predictionResult.innerHTML =
+                "Predicted sentiment: " + data.prediction;
+            } else if (data.error) {
+              predictionResult.innerHTML = "Error: " + data.error;
+            } else {
+              predictionResult.innerHTML = "Unexpected response format.";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            predictionResult.innerHTML = "Error predicting sentiment.";
+          });
+      } else {
+        predictionResult.innerHTML = "Please enter text to predict sentiment.";
+      }
+    }
+  </script> -->
+
+  <script>
+    function predict() {
+      var textInput = document.getElementById("textInput");
+      var predictionResult = document.getElementById("predictionResult");
+
+      if (textInput.value.trim() !== "") {
+        // Predict on single sentence
+        fetch("http://localhost:5000/predict", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ text: textInput.value.trim() }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                "Network response was not ok " + response.statusText
+              );
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log(data);
+            if (data.prediction) {
+              predictionResult.innerHTML =
+                "Predicted sentiment: " + data.prediction;
+            } else if (data.error) {
+              predictionResult.innerHTML = "Error: " + data.error;
+            } else {
+              predictionResult.innerHTML = "Unexpected response format.";
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            predictionResult.innerHTML =
+              "Error predicting sentiment: " + error.message;
+          });
+      } else {
+        predictionResult.innerHTML = "Please enter text to predict sentiment.";
+      }
+    }
+  </script>
+</html>
